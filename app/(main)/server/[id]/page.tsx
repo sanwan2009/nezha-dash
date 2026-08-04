@@ -4,6 +4,7 @@ import { use, useState } from "react"
 import { NetworkChartClient } from "@/app/(main)/ClientComponents/detail/NetworkChart"
 import ServerDetailChartClient from "@/app/(main)/ClientComponents/detail/ServerDetailChartClient"
 import ServerDetailClient from "@/app/(main)/ClientComponents/detail/ServerDetailClient"
+import ServerDetailSummary from "@/app/(main)/ClientComponents/detail/ServerDetailSummary"
 import ServerIPInfo from "@/app/(main)/ClientComponents/detail/ServerIPInfo"
 import TabSwitch from "@/components/TabSwitch"
 import { Separator } from "@/components/ui/separator"
@@ -29,6 +30,8 @@ export default function Page({ params }: PageProps) {
   const disabledTabs: TabType[] = disableNetworkTab ? ["Network"] : []
   const [currentTab, setCurrentTab] = useState<TabType>(tabs[0])
 
+  const showServerDetailSummary = getEnv("NEXT_PUBLIC_ShowServerDetailSummary") === "true"
+
   // Handle tab switching - prevent switching to disabled tabs
   const handleTabSwitch = (tab: string) => {
     if (!disabledTabs.includes(tab as TabType)) {
@@ -37,7 +40,7 @@ export default function Page({ params }: PageProps) {
   }
 
   const tabContent = {
-    Detail: <ServerDetailChartClient server_id={serverId} show={currentTab === "Detail"} />,
+    Detail: <ServerDetailChartClient server_id={serverId} />,
     Network: disableNetworkTab ? (
       <div className="flex flex-col items-center justify-center p-8">
         <div className="text-center">
@@ -49,7 +52,7 @@ export default function Page({ params }: PageProps) {
       </div>
     ) : (
       <>
-        {getEnv("NEXT_PUBLIC_ShowIpInfo") && <ServerIPInfo server_id={serverId} />}
+        {getEnv("NEXT_PUBLIC_ShowIpInfo") === "true" && <ServerIPInfo server_id={serverId} />}
         <NetworkChartClient server_id={serverId} show={currentTab === "Network"} />
       </>
     ),
@@ -62,7 +65,7 @@ export default function Page({ params }: PageProps) {
       {/* Always show tab navigation */}
       <nav className="my-2 flex w-full items-center">
         <Separator className="flex-1" />
-        <div className="flex w-full max-w-[200px] justify-center">
+        <div className="flex w-full max-w-50 justify-center">
           <TabSwitch
             tabs={tabs}
             currentTab={currentTab}
@@ -72,6 +75,13 @@ export default function Page({ params }: PageProps) {
         </div>
         <Separator className="flex-1" />
       </nav>
+
+      {/* detail lists */}
+      {showServerDetailSummary && (
+        <section>
+          <ServerDetailSummary server_id={serverId} />
+        </section>
+      )}
 
       {tabContent[currentTab]}
     </main>

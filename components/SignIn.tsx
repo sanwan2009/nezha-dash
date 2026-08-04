@@ -61,14 +61,14 @@ export function SignIn() {
           )}
           <p className="font-semibold text-base">{t("SignInMessage")}</p>
           <input
-            className="rounded-[5px] border-[1px] border-stone-300 px-1 dark:border-stone-800"
+            className="rounded-[5px] border border-stone-300 px-1 dark:border-stone-800"
             name="password"
             type="password"
           />
         </label>
         <button
           type="submit"
-          className="flex w-fit items-center gap-1 rounded-[8px] border border-stone-300 bg-card px-1.5 py-0.5 font-semibold text-card-foreground text-sm shadow-lg shadow-neutral-200/40 transition-all hover:brightness-95 dark:border-stone-800 dark:shadow-none"
+          className="flex w-fit cursor-pointer items-center gap-1 rounded-[8px] border border-stone-300 bg-card px-1.5 py-0.5 font-semibold text-card-foreground text-sm shadow-lg shadow-stone-200/50 transition-all hover:brightness-95 dark:border-stone-800 dark:shadow-none"
           disabled={loading}
         >
           {t("Submit")}
